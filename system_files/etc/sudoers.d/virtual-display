@@ -1,0 +1,1 @@
+mino ALL=(root) NOPASSWD: /usr/libexec/mino/virtual-display.sh on, /usr/libexec/mino/virtual-display.sh off

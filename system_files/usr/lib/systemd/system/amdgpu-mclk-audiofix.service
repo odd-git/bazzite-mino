@@ -1,0 +1,7 @@
+[Unit]
+Description=Pin AMD clocks high when an external display is connected (HDMI audio fix)
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash /usr/libexec/mino/amdgpu-mclk-audiofix.sh
+[Install]
+WantedBy=multi-user.target

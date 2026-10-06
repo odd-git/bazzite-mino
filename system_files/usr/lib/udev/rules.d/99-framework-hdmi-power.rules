@@ -1,0 +1,2 @@
+# Disable USB autosuspend for Framework HDMI Expansion Card to prevent audio dropouts
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="32ac", ATTR{idProduct}=="0002", ATTR{power/control}="on"

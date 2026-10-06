@@ -4,24 +4,34 @@ set -ouex pipefail
 
 # Copy the contents of system_files/ of the git repo to /
 cp -avf "/ctx/system_files"/. /
+chmod 0440 /etc/sudoers.d/ardour-gpu /etc/sudoers.d/virtual-display
 
-### Install packages
+### Packages
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+# Bump to update Handy (no dnf repo upstream: https://github.com/cjpais/Handy/releases)
+HANDY_VERSION=0.9.8
 
-# this installs a package from fedora repos
-dnf5 install -y tmux
+dnf5 install -y \
+    liquidctl \
+    torbrowser-launcher \
+    "https://github.com/cjpais/Handy/releases/download/v${HANDY_VERSION}/Handy-${HANDY_VERSION}-1.x86_64.rpm"
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# Terra ships disabled in Bazzite: enable it only for this transaction
+dnf5 install -y --enablerepo=terra coolercontrol
 
-#### Example for enabling a System Unit File
+# Trivalent from secureblue; repo removed afterwards, the daily build keeps it updated
+cat > /etc/yum.repos.d/secureblue.repo <<'REPO'
+[secureblue]
+name=secureblue
+baseurl=https://repo.secureblue.dev
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://repo.secureblue.dev/secureblue.gpg
+REPO
+dnf5 install -y trivalent
+rm /etc/yum.repos.d/secureblue.repo
 
-systemctl enable podman.socket
+### Services
+
+systemctl enable coolercontrold.service lactd.service tailscaled.service amdgpu-mclk-audiofix.service

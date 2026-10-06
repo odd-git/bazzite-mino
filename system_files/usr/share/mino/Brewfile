@@ -1,0 +1,70 @@
+tap "ublue-os/tap"
+tap "valkyrie00/bbrew", trusted: true
+# Improved shell history for zsh, bash, fish and nushell
+brew "atuin"
+# Preexec and precmd functions for Bash (like Zsh)
+brew "bash-preexec"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
+# Manage your dotfiles across multiple diverse machines, securely
+brew "chezmoi"
+# Cross-platform make
+brew "cmake"
+# Get a file from an HTTP, HTTPS or FTP server
+brew "curl"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# .NET Core
+brew "dotnet"
+# Linux utility to get information on filesystems, like df but better
+brew "dysk"
+# Modern, maintained replacement for ls
+brew "eza"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# GNU compiler collection
+brew "gcc"
+# GitHub command-line tool
+brew "gh"
+# Git extension for versioning large files
+brew "git-lfs"
+# Open-source GitLab command-line tool
+brew "glab"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@4"
+# Update of iperf: measures TCP, UDP, and SCTP bandwidth
+brew "iperf3"
+# GObject bindings for libudev
+brew "libgudev"
+# Utility for directing compilation
+brew "make"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Stress test a computer system in various selectable ways
+brew "stress-ng"
+# Very fast implementation of tldr in Rust
+brew "tealdeer"
+# General purpose fuzzy finder TUI
+brew "television"
+# Command-line interface to the freedesktop.org trashcan
+brew "trash-cli"
+# Ultra fast grep with query UI, fuzzy search, archive search, and more
+brew "ugrep"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
+# Process YAML, JSON, XML, CSV and properties documents from the CLI
+brew "yq"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
+# Modern TUI for managing Homebrew packages and casks on macOS and Linux
+brew "valkyrie00/bbrew/bbrew", trusted: true

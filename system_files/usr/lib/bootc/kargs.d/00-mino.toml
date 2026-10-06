@@ -1,0 +1,1 @@
+kargs = ["amdgpu.sg_display=0", "threadirqs"]
