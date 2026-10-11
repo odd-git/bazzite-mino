@@ -10,11 +10,14 @@ chmod 0440 /etc/sudoers.d/ardour-gpu /etc/sudoers.d/virtual-display
 
 # Bump to update Handy (no dnf repo upstream: https://github.com/cjpais/Handy/releases)
 HANDY_VERSION=0.9.8
+# Bump to update Craft Launcher (https://github.com/storytold/craft-launcher/releases)
+CRAFT_VERSION=0.2.1
 
 dnf5 install -y \
     liquidctl \
     torbrowser-launcher \
-    "https://github.com/cjpais/Handy/releases/download/v${HANDY_VERSION}/Handy-${HANDY_VERSION}-1.x86_64.rpm"
+    "https://github.com/cjpais/Handy/releases/download/v${HANDY_VERSION}/Handy-${HANDY_VERSION}-1.x86_64.rpm" \
+    "https://github.com/storytold/craft-launcher/releases/download/v${CRAFT_VERSION}/artcraft-launcher-${CRAFT_VERSION}-linux-x86_64.rpm"
 
 # Terra ships disabled in Bazzite: enable it only for this transaction
 dnf5 install -y --enablerepo=terra coolercontrol
