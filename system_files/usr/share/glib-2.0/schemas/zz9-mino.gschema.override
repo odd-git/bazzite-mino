@@ -1,0 +1,5 @@
+# Sorts after bazzite's zz0-04-*-theme override, so this wallpaper wins as the system default
+[org.gnome.desktop.background]
+picture-uri='file:///usr/share/backgrounds/mino/wallpaper.png'
+picture-uri-dark='file:///usr/share/backgrounds/mino/wallpaper.png'
+picture-options='zoom'

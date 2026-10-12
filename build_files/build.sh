@@ -6,6 +6,15 @@ set -ouex pipefail
 cp -avf "/ctx/system_files"/. /
 chmod 0440 /etc/sudoers.d/ardour-gpu /etc/sudoers.d/virtual-display
 
+# Default wallpaper via a gschema override. Validate our file strictly on its own (bazzite's own
+# overrides contain keys that --strict rejects), then compile everything the way bazzite does.
+schemas=/usr/share/glib-2.0/schemas
+check=$(mktemp -d)
+cp "$schemas"/org.gnome.desktop.{background.gschema,enums}.xml "$schemas"/zz9-mino.gschema.override "$check"
+glib-compile-schemas --strict "$check"
+rm -r "$check"
+glib-compile-schemas "$schemas"
+
 ### Signature policy: let rpm-ostree verify this image with cosign.pub (bazzite's policy.json only knows ublue-os)
 jq '.transports.docker["ghcr.io/odd-git"] = [{"type": "sigstoreSigned", "keyPath": "/etc/pki/containers/odd-git.pub", "signedIdentity": {"type": "matchRepository"}}]' \
     /etc/containers/policy.json > /tmp/policy.json
