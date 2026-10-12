@@ -14,10 +14,19 @@ chmod 0644 /etc/containers/policy.json
 
 ### Packages
 
-# Bump to update Handy (no dnf repo upstream: https://github.com/cjpais/Handy/releases)
-HANDY_VERSION=0.9.8
-# Bump to update Craft Launcher (https://github.com/storytold/craft-launcher/releases)
-CRAFT_VERSION=0.2.1
+# Latest release of a GitHub repo, taken from the /releases/latest redirect (no API, no rate limit).
+# The daily build picks up new upstream releases by itself; if one can't be resolved the build
+# fails before pushing, so the previously published image stays in place.
+latest_version() {
+    local tag
+    tag=$(curl -fsSL -o /dev/null -w '%{url_effective}' "https://github.com/$1/releases/latest")
+    tag=${tag##*/v}
+    [[ $tag =~ ^[0-9]+(\.[0-9]+)+$ ]] || { echo "cannot resolve latest release of $1 (got '$tag')" >&2; exit 1; }
+    echo "$tag"
+}
+# No dnf repo exists for these two: RPMs from the upstream GitHub releases
+HANDY_VERSION=$(latest_version cjpais/Handy)
+CRAFT_VERSION=$(latest_version storytold/craft-launcher)
 
 dnf5 install -y \
     liquidctl \
