@@ -6,6 +6,12 @@ set -ouex pipefail
 cp -avf "/ctx/system_files"/. /
 chmod 0440 /etc/sudoers.d/ardour-gpu /etc/sudoers.d/virtual-display
 
+### Signature policy: let rpm-ostree verify this image with cosign.pub (bazzite's policy.json only knows ublue-os)
+jq '.transports.docker["ghcr.io/odd-git"] = [{"type": "sigstoreSigned", "keyPath": "/etc/pki/containers/odd-git.pub", "signedIdentity": {"type": "matchRepository"}}]' \
+    /etc/containers/policy.json > /tmp/policy.json
+mv /tmp/policy.json /etc/containers/policy.json
+chmod 0644 /etc/containers/policy.json
+
 ### Packages
 
 # Bump to update Handy (no dnf repo upstream: https://github.com/cjpais/Handy/releases)

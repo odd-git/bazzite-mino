@@ -7,7 +7,6 @@ com.github.Matoking.protontricks
 com.github.jeromerobert.pdfarranger
 com.github.tchx84.Flatseal
 com.heroicgameslauncher.hgl
-com.irealpro.irealpro
 com.mattjakeman.ExtensionManager
 com.obsproject.Studio
 com.protonvpn.www
