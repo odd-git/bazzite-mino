@@ -36,12 +36,16 @@ latest_version() {
 # No dnf repo exists for these two: RPMs from the upstream GitHub releases
 HANDY_VERSION=$(latest_version cjpais/Handy)
 CRAFT_VERSION=$(latest_version storytold/craft-launcher)
+# SoundCraft is part of the Craft suite. artcraft-launcher can't install on ostree systems yet
+# (upstream fix #107 is unreleased), so it ships in the image until the launcher can do it.
+SOUNDCRAFT_VERSION=$(latest_version storytold/soundcraft)
 
 dnf5 install -y \
     liquidctl \
     torbrowser-launcher \
     "https://github.com/cjpais/Handy/releases/download/v${HANDY_VERSION}/Handy-${HANDY_VERSION}-1.x86_64.rpm" \
-    "https://github.com/storytold/craft-launcher/releases/download/v${CRAFT_VERSION}/artcraft-launcher-${CRAFT_VERSION}-linux-x86_64.rpm"
+    "https://github.com/storytold/craft-launcher/releases/download/v${CRAFT_VERSION}/artcraft-launcher-${CRAFT_VERSION}-linux-x86_64.rpm" \
+    "https://github.com/storytold/soundcraft/releases/download/v${SOUNDCRAFT_VERSION}/soundcraft-${SOUNDCRAFT_VERSION}-linux-x86_64.rpm"
 
 # Terra ships disabled in Bazzite: enable it only for this transaction
 dnf5 install -y --enablerepo=terra coolercontrol
