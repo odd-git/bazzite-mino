@@ -47,6 +47,22 @@ dnf5 install -y \
     "https://github.com/storytold/craft-launcher/releases/download/v${CRAFT_VERSION}/artcraft-launcher-${CRAFT_VERSION}-linux-x86_64.rpm" \
     "https://github.com/storytold/soundcraft/releases/download/v${SOUNDCRAFT_VERSION}/soundcraft-${SOUNDCRAFT_VERSION}-linux-x86_64.rpm"
 
+# Venturi ships only as an AppImage: extract it at build time (no FUSE needed at runtime).
+# The binary finds its bundled libs via RPATH $ORIGIN/../lib.
+VENTURI_VERSION=$(latest_version VenturiVideo/Venturi)
+venturi=$(mktemp -d)
+curl -fsSL -o "$venturi/Venturi.AppImage" \
+    "https://github.com/VenturiVideo/Venturi/releases/download/v${VENTURI_VERSION}/Venturi-x86_64.AppImage"
+chmod +x "$venturi/Venturi.AppImage"
+(cd "$venturi" && ./Venturi.AppImage --appimage-extract >/dev/null)
+chmod -R u=rwX,go=rX "$venturi/squashfs-root"  # extracted dirs are 0700
+mkdir -p /usr/lib/venturi
+cp -a "$venturi/squashfs-root/usr/bin" "$venturi/squashfs-root/usr/lib" /usr/lib/venturi/
+cp -a "$venturi/squashfs-root/usr/share"/. /usr/share/
+ln -sf /usr/lib/venturi/bin/vv-app /usr/bin/vv-app
+rm -r "$venturi"
+update-mime-database /usr/share/mime
+
 # Terra ships disabled in Bazzite: enable it only for this transaction
 dnf5 install -y --enablerepo=terra coolercontrol
 
