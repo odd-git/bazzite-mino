@@ -63,8 +63,47 @@ ln -sf /usr/lib/venturi/bin/vv-app /usr/bin/vv-app
 rm -r "$venturi"
 update-mime-database /usr/share/mime
 
-# Terra ships disabled in Bazzite: enable it only for this transaction
-dnf5 install -y --enablerepo=terra coolercontrol
+# Terra ships disabled in Bazzite: enable it only for this transaction.
+# uwsm runs the Hyprland session: it reaches graphical-session.target (Sunshine) and runs XDG autostart.
+dnf5 install -y --enablerepo=terra coolercontrol uwsm
+
+# Hyprland, a secondary GDM session for now. Not in Fedora; sdegler's COPR (successor of solopasha's)
+# tracks upstream releases. DMS (bar, launcher, notifications, lock, idle, polkit, clipboard) comes from
+# its upstream COPRs; quickshell too, as Fedora's is an old git snapshot. No dms-greeter: GDM stays for now.
+# includepkgs keeps everything else (kitty, cliphist, ghostty...) on Fedora's builds.
+cat > /etc/yum.repos.d/hyprland.repo <<'REPO'
+[copr-sdegler-hyprland]
+name=Copr sdegler/hyprland
+baseurl=https://download.copr.fedorainfracloud.org/results/sdegler/hyprland/fedora-$releasever-$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/sdegler/hyprland/pubkey.gpg
+includepkgs=hypr*,aquamarine,glaze,xdg-desktop-portal-hyprland
+
+[copr-avengemedia-dms]
+name=Copr avengemedia/dms
+baseurl=https://download.copr.fedorainfracloud.org/results/avengemedia/dms/fedora-$releasever-$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/avengemedia/dms/pubkey.gpg
+includepkgs=dms,dms-cli
+
+[copr-avengemedia-danklinux]
+name=Copr avengemedia/danklinux
+baseurl=https://download.copr.fedorainfracloud.org/results/avengemedia/danklinux/fedora-$releasever-$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/avengemedia/danklinux/pubkey.gpg
+includepkgs=quickshell,cpptrace,dgop,danksearch,matugen
+REPO
+dnf5 install -y \
+    hyprland hyprland-uwsm xdg-desktop-portal-hyprland dms quickshell \
+    grim slurp swappy wl-clipboard brightnessctl playerctl pavucontrol kdeconnectd
+rm /etc/yum.repos.d/hyprland.repo
+# The COPR can lag upstream by weeks: warn only, so the rest of the image keeps updating daily.
+hypr_have=$(rpm -q --qf '%{VERSION}' hyprland)
+hypr_latest=$(latest_version hyprwm/Hyprland)
+[[ $hypr_have == "$hypr_latest" ]] || echo "WARNING: Hyprland $hypr_have from the COPR, upstream is at $hypr_latest" >&2
 
 # Trivalent from secureblue; repo removed afterwards, the daily build keeps it updated
 cat > /etc/yum.repos.d/secureblue.repo <<'REPO'
