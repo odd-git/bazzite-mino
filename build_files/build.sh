@@ -36,8 +36,8 @@ latest_version() {
 # No dnf repo exists for these two: RPMs from the upstream GitHub releases
 HANDY_VERSION=$(latest_version cjpais/Handy)
 CRAFT_VERSION=$(latest_version storytold/craft-launcher)
-# SoundCraft is part of the Craft suite. artcraft-launcher can't install on ostree systems yet
-# (upstream fix #107 is unreleased), so it ships in the image until the launcher can do it.
+# SoundCraft is part of the Craft suite. It ships as an RPM, not the launcher's Flatpak: the sandbox
+# can't create the session's "Audio Files" folder (document portal) and its menu entry would mask this one.
 SOUNDCRAFT_VERSION=$(latest_version storytold/soundcraft)
 
 dnf5 install -y \
