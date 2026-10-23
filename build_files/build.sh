@@ -97,8 +97,8 @@ gpgkey=https://download.copr.fedorainfracloud.org/results/avengemedia/danklinux/
 includepkgs=quickshell,cpptrace,dgop,danksearch,matugen
 REPO
 dnf5 install -y \
-    hyprland hyprland-uwsm xdg-desktop-portal-hyprland dms quickshell \
-    grim slurp swappy wl-clipboard brightnessctl playerctl pavucontrol kdeconnectd
+    hyprland hyprland-uwsm xdg-desktop-portal-hyprland dms quickshell danksearch matugen \
+    fuzzel grim slurp swappy wl-clipboard brightnessctl playerctl pavucontrol kdeconnectd
 rm /etc/yum.repos.d/hyprland.repo
 # The COPR can lag upstream by weeks: warn only, so the rest of the image keeps updating daily.
 hypr_have=$(rpm -q --qf '%{VERSION}' hyprland)
