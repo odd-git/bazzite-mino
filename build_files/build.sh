@@ -67,6 +67,8 @@ update-mime-database /usr/share/mime
 # uwsm runs the Hyprland session: it reaches graphical-session.target (Sunshine) and runs XDG autostart.
 dnf5 install -y --enablerepo=terra coolercontrol uwsm
 
+# Sunshine runs from LizardByte's COPR, not the Flatpak: the Flatpak sandbox hides the Wayland capture
+# protocols and xdg-desktop-portal-hyprland has no RemoteDesktop, so only the RPM (cap_sys_admin, KMS/wlr capture) streams.
 # Hyprland, a secondary GDM session for now. Not in Fedora; sdegler's COPR (successor of solopasha's)
 # tracks upstream releases. DMS (bar, launcher, notifications, lock, idle, polkit, clipboard) comes from
 # its upstream COPRs; quickshell too, as Fedora's is an old git snapshot. No dms-greeter: GDM stays for now.
@@ -95,10 +97,18 @@ enabled=1
 gpgcheck=1
 gpgkey=https://download.copr.fedorainfracloud.org/results/avengemedia/danklinux/pubkey.gpg
 includepkgs=quickshell,cpptrace,dgop,danksearch,matugen
+
+[copr-lizardbyte-stable]
+name=Copr lizardbyte/stable
+baseurl=https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/fedora-$releasever-$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=https://download.copr.fedorainfracloud.org/results/lizardbyte/stable/pubkey.gpg
+includepkgs=Sunshine
 REPO
 dnf5 install -y \
-    hyprland hyprland-uwsm xdg-desktop-portal-hyprland dms quickshell danksearch matugen \
-    fuzzel grim slurp swappy wl-clipboard brightnessctl playerctl pavucontrol kdeconnectd
+    hyprland hyprland-uwsm hyprland-guiutils xdg-desktop-portal-hyprland dms quickshell danksearch matugen \
+    Sunshine fuzzel grim slurp swappy wl-clipboard brightnessctl playerctl pavucontrol kdeconnectd
 rm /etc/yum.repos.d/hyprland.repo
 # The COPR can lag upstream by weeks: warn only, so the rest of the image keeps updating daily.
 hypr_have=$(rpm -q --qf '%{VERSION}' hyprland)
