@@ -1,6 +1,5 @@
 app.zen_browser.zen
 au.stevetech.yafi
-com.bitwarden.desktop
 com.calibre_ebook.calibre
 com.discordapp.Discord
 com.github.Matoking.protontricks
