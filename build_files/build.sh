@@ -65,7 +65,14 @@ update-mime-database /usr/share/mime
 
 # Terra ships disabled in Bazzite: enable it only for this transaction.
 # uwsm runs the Hyprland session: it reaches graphical-session.target (Sunshine) and runs XDG autostart.
-dnf5 install -y --enablerepo=terra coolercontrol uwsm
+# Terra's regional caches can briefly serve repomd.xml and its .asc from different regenerations
+# ("Bad PGP signature" on GitHub runners): retry until they match again.
+for try in 1 2 3 4 5; do
+    dnf5 install -y --enablerepo=terra coolercontrol uwsm && break
+    (( try < 5 )) || exit 1
+    dnf5 clean metadata
+    sleep 60
+done
 
 # Sunshine runs from LizardByte's COPR, not the Flatpak: the Flatpak sandbox hides the Wayland capture
 # protocols and xdg-desktop-portal-hyprland has no RemoteDesktop, so only the RPM (cap_sys_admin, KMS/wlr capture) streams.
