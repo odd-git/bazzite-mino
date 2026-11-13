@@ -135,6 +135,11 @@ REPO
 dnf5 install -y trivalent
 rm /etc/yum.repos.d/secureblue.repo
 
+### btop: already in Bazzite, but its menu entry ships Hidden=true. The Catppuccin theme is in system_files;
+### the per-user default (color_theme) comes from chezmoi.
+sed -i '/^Hidden=true/d' /usr/share/applications/btop.desktop
+! grep -q '^Hidden' /usr/share/applications/btop.desktop
+
 ### Services
 
 systemctl enable coolercontrold.service lactd.service tailscaled.service amdgpu-mclk-audiofix.service
